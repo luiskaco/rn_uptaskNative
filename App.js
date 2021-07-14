@@ -21,12 +21,31 @@ const App = () => {
     <>
        <NavigationContainer>
          <Stack.Navigator  initialRouteName="Login">
+           {/* Creando las ventanas */}
            <Stack.Screen
                 name="Login"
                 component={Login}
                 options={{
                     title: "Iniciar Sessión",
                     headerShown: false  // Ocultado el titulo de arriba
+                }}
+           />
+            <Stack.Screen
+                name="CrearCuenta"
+                component={CrearCuenta}
+                options={{
+                    title: "Crear Cuenta",// Ocultado el titulo de arriba
+                   // Personalizandoe l header
+                    headerStyle:{
+                      // Cambiando el color del background
+                      backgroundColor: '#28303b',
+                    },
+                    // Cambiando el color del titulo
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                      fontWeight:'bold',
+                    }
+
                 }}
            />
 
