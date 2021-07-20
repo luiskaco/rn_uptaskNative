@@ -2,6 +2,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 
+// Importamos NativeBase para importar el objeto de root
+import {Root} from 'native-base';
+
 // Importando navegacion
 import { NavigationContainer } from '@react-navigation/native';
 // Importamos el tipo de ventana
@@ -15,10 +18,13 @@ import { createStackNavigator } from '@react-navigation/stack';
   import CrearCuenta from './views/crearCuenta';
 
 const App = () => {
-
+{/* Objeto necesario */}
 
   return (
+
     <>
+    <Root> 
+
        <NavigationContainer>
          <Stack.Navigator  initialRouteName="Login">
            {/* Creando las ventanas */}
@@ -51,6 +57,8 @@ const App = () => {
 
          </Stack.Navigator>
        </NavigationContainer>
+            
+    </Root>
     </>
   );
 };

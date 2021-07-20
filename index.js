@@ -1,7 +1,7 @@
 /**
  * @format
  */
-import React from 'react';
+import React from 'react';  // importamos react
 
 import {AppRegistry} from 'react-native';
 import App from './App';
@@ -13,7 +13,9 @@ import { ApolloProvider } from '@apollo/client';
 
 // Nota: Hacemos que este disponible el apollo en toda la aplicacion
 const uptaskApp = () => (
+    // Todo va ser disponible dentro del proyecto
     <ApolloProvider client={client}>
+         
          <App />
     </ApolloProvider>
 )
