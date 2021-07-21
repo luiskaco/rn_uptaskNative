@@ -16,6 +16,7 @@ import { createStackNavigator } from '@react-navigation/stack';
   // Importando vistas
   import Login from './views/login';
   import CrearCuenta from './views/crearCuenta';
+  import Proyectos from './views/proyectos';
 
 const App = () => {
 {/* Objeto necesario */}
@@ -51,7 +52,23 @@ const App = () => {
                     headerTitleStyle: {
                       fontWeight:'bold',
                     }
-
+                }}
+           />
+             <Stack.Screen
+                name="Proyectos"
+                component={Proyectos}
+                options={{
+                    title: "Proyectos",// Ocultado el titulo de arriba
+                   // Personalizandoe l header
+                    headerStyle:{
+                      // Cambiando el color del background
+                      backgroundColor: '#28303b',
+                    },
+                    // Cambiando el color del titulo
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                      fontWeight:'bold',
+                    }
                 }}
            />
 

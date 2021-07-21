@@ -8,6 +8,10 @@ import globalStyles from '../styles/global'
 // Importando navegacion
 import {useNavigation} from '@react-navigation/native'
 
+// Utilidades de apollo
+import { gql, useMutation} from '@apollo/client'
+
+// COnsulta de GRAP
 const NUEVA_CUENTA = gql`
     mutation crearUsuarioAlias($valores: UsuarioInput){
     crearUsuario(input: $valores)
@@ -15,8 +19,7 @@ const NUEVA_CUENTA = gql`
 
 // nota: se recomienda que el nombre sea en mayuscula
 
-// Utilidades de apollo
-import { gql, useMutation} from '@apollo/client'
+
 
 const CrearCuenta = () => {
     // State del formulario
@@ -47,12 +50,20 @@ const CrearCuenta = () => {
             setMensaje('Todos los campos son obligatorios');
             return ; // Evitamos continuacion
         }
+        
+        // Validamos correo
+        const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        
+        if (!reg.test(email) ){
+            setMensaje('Debe introducir un correo con la forma correcta');
+        }
 
         // Password al menos 6 caracteres
         if(password.length < 6){
             setMensaje('El password debe ser de al menos 6 caracteres');
         }
         // Guardar el usuario
+        
         try {
            const {data} = await crearUsuario({
                // nota: debemos pasar el objeto variables para consulta
@@ -68,10 +79,19 @@ const CrearCuenta = () => {
            }); // Funcion del resolver en servidor en react
 
            // Respuesta del servidor
-           console.log(data);
+           console.log(data.crearUsuario);
+
+           // Guardamos mensaje
+           setMensaje(data.crearUsuario);
+
+           // Redireccionamos al login
+           navigation.navigate('login');
 
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
+      
+           // Guardamos mensaje
+           setMensaje(error.message);
         }
     }
 
