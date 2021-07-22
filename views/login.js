@@ -46,6 +46,9 @@ const Login = () => {
     const handleSubmit = async () => {
         setMensaje(null); // Corrigiendo error event clic
 
+        navigation.navigate('Proyectos');
+        return;
+
         // Validar
         if(email==='' || password==='') {
             // Amostrar error
@@ -98,7 +101,7 @@ const Login = () => {
     }
 
       // Mostrar mensaje Toiast
-      const mostarAlerta = () => {
+      const mostrarAlerta = () => {
         Toast.show({
             text: mensaje,
             buttonText: 'ok',
@@ -141,7 +144,7 @@ const Login = () => {
                     >Crear Cuenta</Text>
 
                         {/* Mostrar mensaje */}
-                        {mensaje && mostarAlerta()}
+                        {mensaje && mostrarAlerta()}
                 </Form>
 
            </View>
