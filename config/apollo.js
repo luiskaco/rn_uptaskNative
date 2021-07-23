@@ -21,7 +21,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const httpLink = createHttpLink({
-    uri: Platform.OS === 'ios' ? 'http://localhost:4000' : 'http://192.168.1.173:4000/'  
+    // uri: Platform.OS === 'ios' ? 'http://localhost:4000' : 'http://192.168.1.173:4000/'  
+    uri: `https://limitless-refuge-92610.herokuapp.com/`  
 })
 
 // NOs permite obtener los valores y pasar los header

@@ -56,7 +56,38 @@ const SingleProyecto = ({route}) => {
 
 
     // APollo crear tareas
-    const [nuevaTarea] = useMutation(NUEVO_TAREA);
+    const [nuevaTarea] = useMutation(NUEVO_TAREA,{
+         update(cache, {data: {nuevaTarea}}){
+             const {obtenerTareas} = cache.readQuery({
+                 query: OBTENER_TAREA,
+                 variables:{
+                    valores:{
+                        proyecto: id
+                    }
+                }
+             });
+
+             // Solo se escribe la parte que se especifican
+             cache.writeQuery({
+                 query: OBTENER_TAREA,
+                 variables:{
+                    valores:{
+                        proyecto: id
+                    }
+                 },
+                 // Con que lo va rescribir
+                 data: {
+                    obtenerTareas: [...obtenerTareas, nuevaTarea]
+                 }
+             })
+         }
+
+    });
+
+    /**
+     *  Nota: Otra forma de refrescar la cache es haciendo uso de refesth solo que esta forma consume mas recursos.
+     *  mientras que esta forma solo reesscribe lo que hay en memoria.
+     */
 
     // Validar y Crear Tarea
     const handleSubmit = async () => {
@@ -147,7 +178,7 @@ const SingleProyecto = ({route}) => {
                             <Tarea
                                 key={tarea.id}
                                 tarea={tarea}
-                               
+                                proyectoID={id}
                             />
                         )) }
                     </List>
