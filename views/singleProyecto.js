@@ -1,5 +1,9 @@
 import React, {useState} from 'react';
+import {StyleSheet} from 'react-native'
 import {Container, Button, H2, Content, List, Form, Item, Input, Toast, Text} from 'native-base';
+
+// Components 
+import Tarea from '../components/Tarea'
 
 // Importando estilos
 import globalStyles from '../styles/global'
@@ -18,17 +22,40 @@ const NUEVO_TAREA = gql`
             }
         }`;
 
+
+// Consulta las tareas del proyecto
+const OBTENER_TAREA = gql`
+        query obtenerTareasAlias($valores: ProyectoIDInput){
+            obtenerTareas(input: $valores){
+                nombre
+                id
+                estado
+            }
+        }`;
+
+
 const SingleProyecto = ({route}) => {
     // Para revisar los valores que se pasan entre ventana
-    console.log(route.params)
+ //   console.log(route.params)
+    // Obtine el ID del proyecto
     const {id} = route.params;
 
     // State del componente
     const [nombre, setNombre] = useState('');
     const [mensaje, setMensaje] = useState(null);
 
-    // APollo
+    // Apollo obtener tareas
+    const {data, loading, error} = useQuery(OBTENER_TAREA,{
+        variables:{
+            valores:{
+                proyecto: id
+            }
+        }
+    });
+    console.log(data);
 
+
+    // APollo crear tareas
     const [nuevaTarea] = useMutation(NUEVO_TAREA);
 
     // Validar y Crear Tarea
@@ -41,16 +68,16 @@ const SingleProyecto = ({route}) => {
         }   
 
         try {
-           const {data} =  await nuevaTarea({
-               variables:{
-                   valores:{
-                       nombre,
-                       proyecto: id
-                   }
-               }
-           });
+            const {data} =  await nuevaTarea({
+                variables:{
+                    valores:{
+                        nombre,
+                        proyecto: id
+                    }
+                }
+            });
 
-            console.log(data);
+            // console.log(data);
 
             // Limpiar nombre
             setNombre('');
@@ -85,6 +112,9 @@ const SingleProyecto = ({route}) => {
             duration: 5000
         })
     }
+
+    // Si apollo esta consultando
+    if(loading) return <Text> Cargando... </Text>
     
     return ( 
         <Container style={[globalStyles.contenido], {backgroundColor: '#e84347'}}>
@@ -104,11 +134,35 @@ const SingleProyecto = ({route}) => {
                     <Text>Crear Tarea</Text>
                 </Button>
 
+               
+
                 {/* Mostrar mensaje */}
                 {mensaje && mostrarAlerta()}
             </Form>
+
+                 <H2 style={globalStyles.subtitulo }>Tareas: {route.params.nombre} </H2>
+                 <Content>
+                    <List style={styles.contenido}>
+                        {data.obtenerTareas.map(tarea => (
+                            <Tarea
+                                key={tarea.id}
+                                tarea={tarea}
+                               
+                            />
+                        )) }
+                    </List>
+                </Content>
         </Container>
+
+        
      );
 }
+
+const styles = StyleSheet.create({
+    contenido:{
+        backgroundColor:'#fff',
+        marginHorizontal:'2.5%'
+    }
+})
  
 export default SingleProyecto;

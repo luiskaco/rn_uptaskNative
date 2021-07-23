@@ -59,21 +59,26 @@ const Proyectos = () => {
             </H2>
 
             <Content>
-                <List style={styles.contenido}>
-                    {data.obtenerProyectos.map(proyecto => (
-                        <ListItem
-                            key={proyecto.id}
-                            onPress={() => navigation.navigate('SingleProyecto', proyecto)}
-                        >
-                            <Left>
-                                <Text>{proyecto.nombre}</Text>
-                            </Left>
-                            <Right>
+                {!loading ? (
+                            <List style={styles.contenido}>
+                            {data.obtenerProyectos.map(proyecto => (
+                                <ListItem
+                                    key={proyecto.id}
+                                    onPress={() => navigation.navigate('SingleProyecto',proyecto )}
+                                >
+                                    <Left>
+                                        <Text>{proyecto.nombre}</Text>
+                                    </Left>
+                                    <Right>
+        
+                                    </Right>
+                                </ListItem>
+                            ))}
+                        </List>
 
-                            </Right>
-                        </ListItem>
-                    ))}
-                </List>
+
+                ) : null }
+            
             </Content>
         </Container>
      );
