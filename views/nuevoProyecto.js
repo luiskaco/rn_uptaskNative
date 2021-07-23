@@ -8,17 +8,54 @@ import globalStyles from '../styles/global'
 // Importando navegacion
 import {useNavigation} from '@react-navigation/native'
 
+
+// Utilidades de apollo
+import { gql, useMutation} from '@apollo/client'
+
+// COnsulta de GRAP
+const NUEVO_PROYECTO = gql`
+        mutation nuevoProyectoAlias($valores: ProyectoInput){
+            nuevoProyecto(input: $valores) {
+            nombre
+            id
+            }
+        }`;
+
+// ACTUALIZAR EL CACHE
+const OBTENER_PROYECTOS = gql`
+    query obtenerProyectosAlias{
+        obtenerProyectos{
+            id
+            nombre
+        } 
+    }`;
+
 const NuevoProyecto = () => {
     // State del componente
     const [mensaje, setMensaje] = useState(null);
     const [nombre, setNombre] = useState('');
 
-    
+    // APollo
+    const [nuevoProyecto] = useMutation(NUEVO_PROYECTO,{
+        // Actualizamos la ache de la data del nuevo proyecto
+        update(cache, { data: {nuevoProyecto}}) {
+            // Extramos proyecto de la cache consultando todos los proyectos
+            const { obtenerProyectos } = cache.readQuery({ query: OBTENER_PROYECTOS });
+            cache.writeQuery({
+                query: OBTENER_PROYECTOS,
+                data: {obtenerProyectos: obtenerProyectos.concat([nuevoProyecto]) }
+            })
+        }
+
+    });
+
+    // Nota: Ver video 262 para refrescar.
+  
     // React Navigation
     const navigation = useNavigation();
     
     // Validar Crear proyecto
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setMensaje(null); // Corrigiendo error event clic
 
         // Validar
@@ -29,11 +66,37 @@ const NuevoProyecto = () => {
 
         // Guardar proyecto
 
-        // Redireccionar
-        navigation.navigate('Proyectos')
+        try {
+            const {data} = await nuevoProyecto({
+                variables:{
+                    valores:{
+                        nombre
+                      }
+                }
+            });
+            // Verificacion
+         //   console.log(data)
+            // Mensaje de confirmacion
+            setMensaje("Proyecto Creado Correctamente!");
+            // Reseteo
+            setNombre('');
+
+            // Redireccionar
+           navigation.navigate('Proyectos')
+
+
+        }catch (error){
+           // console.log(error);
+
+            // Guardamos mensaje
+           setMensaje(error.message);
+       //    setMensaje(error.message.replace('GraphQl error:', ''));
+
+        }
+
+ 
     }
     
-
     // Mostrar mensaje Toiast
     const mostrarAlerta = () => {
         Toast.show({

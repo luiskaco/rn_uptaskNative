@@ -85,7 +85,7 @@ const CrearCuenta = () => {
            setMensaje(data.crearUsuario);
 
            // Redireccionamos al login
-           navigation.navigate('login');
+           navigation.navigate('Login');
 
         } catch (error) {
             console.log(error.message)

@@ -18,6 +18,7 @@ import { createStackNavigator } from '@react-navigation/stack';
   import CrearCuenta from './views/crearCuenta';
   import Proyectos from './views/proyectos';
   import NuevoProyecto from './views/nuevoProyecto';
+  import SingleProyecto from './views/singleProyecto';
 
 const App = () => {
 {/* Objeto necesario */}
@@ -89,6 +90,25 @@ const App = () => {
                       fontWeight:'bold',
                     }
                 }}
+           />
+
+          <Stack.Screen
+                name="SingleProyecto"
+                component={SingleProyecto}
+                // convertimos el opcion en un callback
+                options={({route}) => ({
+                    title: route.params.nombre,  // Extraemos el nobmre 
+                   // Personalizandoe l header
+                    headerStyle:{
+                      // Cambiando el color del background
+                      backgroundColor: '#28303b',
+                    },
+                    // Cambiando el color del titulo
+                    headerTintColor: '#fff',
+                    headerTitleStyle: {
+                      fontWeight:'bold',
+                    }
+                })}
            />
 
          </Stack.Navigator>

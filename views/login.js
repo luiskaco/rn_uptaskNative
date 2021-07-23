@@ -46,8 +46,8 @@ const Login = () => {
     const handleSubmit = async () => {
         setMensaje(null); // Corrigiendo error event clic
 
-        navigation.navigate('Proyectos');
-        return;
+        // navigation.navigate('Proyectos');
+        // return;
 
         // Validar
         if(email==='' || password==='') {
@@ -119,7 +119,8 @@ const Login = () => {
                         <Input 
                             autoCompleteType="email"
                             placeholder="Email"
-                            onChangeText={texto => setEmail(texto)}
+                            onChangeText={texto => setEmail(texto.toLowerCase())}
+                            value={email}
                         />
                     </Item>
                     <Item inlineLabel last style={globalStyles.input}>
